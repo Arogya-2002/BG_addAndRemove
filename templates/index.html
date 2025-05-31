@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Background Remove & Add</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Background Image Tool</h1>
+
+        <section>
+            <h2>Remove Background</h2>
+            <form id="removeForm">
+                <input type="file" name="file" accept="image/*" required />
+                <button type="submit">Remove Background</button>
+            </form>
+            <div id="removeResult" class="result"></div>
+        </section>
+
+        <hr />
+
+        <section>
+            <h2>Add Background</h2>
+            <form id="addForm">
+                <label>Foreground (transparent image):</label><br/>
+                <input type="file" name="foreground" accept="image/*" required /><br/>
+                <label>Background image:</label><br/>
+                <input type="file" name="background" accept="image/*" required /><br/><br/>
+                <button type="submit">Add Background</button>
+            </form>
+            <div id="addResult" class="result"></div>
+        </section>
+    </div>
+
+    <script>
+        // Handle remove background form submit
+        const removeForm = document.getElementById('removeForm');
+        const removeResult = document.getElementById('removeResult');
+
+        removeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            removeResult.innerHTML = "Processing...";
+
+            const formData = new FormData(removeForm);
+            const response = await fetch('/remove-background/', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                removeResult.innerHTML = `<img src="${url}" alt="Background Removed Image" class="output-img" />`;
+            } else {
+                const error = await response.json();
+                removeResult.innerHTML = `<p class="error">Error: ${error.error || 'Failed to remove background'}</p>`;
+            }
+        });
+
+        // Handle add background form submit
+        const addForm = document.getElementById('addForm');
+        const addResult = document.getElementById('addResult');
+
+        addForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            addResult.innerHTML = "Processing...";
+
+            const formData = new FormData(addForm);
+            const response = await fetch('/add-background/', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                addResult.innerHTML = `<img src="${url}" alt="Background Added Image" class="output-img" />`;
+            } else {
+                const error = await response.json();
+                addResult.innerHTML = `<p class="error">Error: ${error.error || 'Failed to add background'}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
