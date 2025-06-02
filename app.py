@@ -2,6 +2,7 @@ from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 
 import shutil
 import os
@@ -11,6 +12,15 @@ from src.pipeline.bg_prediction_pipeline import process_remove_bg, process_add_b
 from src.exceptions import CustomException
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or set to your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Mount static files directory for CSS, JS, images etc.
 app.mount("/static", StaticFiles(directory="static"), name="static")

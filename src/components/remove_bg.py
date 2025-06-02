@@ -55,8 +55,8 @@ class RemoveBg:
             raise CustomException(e, sys) from e
 
 
-if __name__ == "__main__":
-    remove_bg_obj = RemoveBg()
-    remove_bg_obj.remove_bg(
-        r"C:\Users\Vamshi\Desktop\Projects\litzchill\remove_bg\data\sky2.jpg"
-    )
+# if __name__ == "__main__":
+#     remove_bg_obj = RemoveBg()
+#     remove_bg_obj.remove_bg(
+#         r"C:\Users\Vamshi\Desktop\Projects\litzchill\remove_bg\data\sky2.jpg"
+#     )
