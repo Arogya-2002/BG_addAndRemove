@@ -1,6 +1,6 @@
 from src.components.add_bg import AddBg
 from src.components.remove_bg import RemoveBg
-from src.components.inpaint import Inpaint  # ✅ New import
+from src.components.inpaint import Inpaint  
 
 from src.exceptions import CustomException
 from src.logger import logging
@@ -56,9 +56,9 @@ def process_inpaint(mask_img_path: str, input_img_path: str) -> str:
 #         # Step 3: Inpaint the original with a mask
 #         inpainted_path = process_inpaint(mask_img_path=mask_image, input_img_path=input_image)
 
-#         print(f"\n✅ Background removed: {rmbg_path}")
-#         print(f"✅ New background added: {final_bg_path}")
-#         print(f"✅ Inpainting done: {inpainted_path}")
+#         print(f"\nBackground removed: {rmbg_path}")
+#         print(f"New background added: {final_bg_path}")
+#         print(f"Inpainting done: {inpainted_path}")
 
 #     except CustomException as e:
 #         logging.error(f"Pipeline error: {e}")
