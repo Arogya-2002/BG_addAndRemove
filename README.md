@@ -1,22 +1,23 @@
-# Background Removal and Background Change Service
+# Background Removal, Replacement, and Inpainting Service
 
-A powerful image processing service built with Python and FastAPI that provides intelligent background removal and replacement capabilities. Upload images through a clean web interface or REST API to automatically remove backgrounds or add custom backgrounds to your images.
+A powerful image processing service built with Python and FastAPI that provides intelligent background removal, background replacement, and image inpainting capabilities. Upload images through a clean web interface or REST API to automatically remove backgrounds, add custom ones, or fill masked regions.
 
-![Python](https://img.shields.io/badge/python-v3.10+-blue.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-green.svg)
+![Python](https://img.shields.io/badge/python-v3.10+-blue.svg)  
+![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-green.svg)  
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ---
 
 ## ✨ Features
 
-- **🎯 Smart Background Removal**: Leverage the powerful U2NET model via `rembg` library for precise background removal
-- **🖼️ Background Replacement**: Seamlessly add custom backgrounds to transparent images
-- **🚀 REST API**: FastAPI-powered endpoints for programmatic access
-- **🌐 Web Interface**: Clean, responsive HTML interface for easy image uploads
-- **📁 Modular Architecture**: Well-organized codebase with reusable components
-- **🛡️ Robust Error Handling**: Comprehensive logging and exception management
-- **🗂️ Smart File Management**: Automatic temporary file cleanup and organized storage
+- **🎯 Smart Background Removal**: Leverage the powerful U2NET model via `rembg` library for precise background removal  
+- **🖼️ Background Replacement**: Seamlessly add custom backgrounds to transparent images  
+- **🪄 Inpainting**: Fill masked areas in images using stable diffusion inpainting models  
+- **🚀 REST API**: FastAPI-powered endpoints for programmatic access  
+- **🌐 Web Interface**: Clean, responsive HTML interface for easy image uploads  
+- **📁 Modular Architecture**: Well-organized codebase with reusable components  
+- **🛡️ Robust Error Handling**: Comprehensive logging and exception management  
+- **🗂️ Smart File Management**: Automatic temporary file cleanup and organized storage  
 
 ---
 
@@ -32,10 +33,11 @@ A powerful image processing service built with Python and FastAPI that provides 
 ├── src/
 │   ├── components/
 │   │   ├── add_bg.py              # Background addition logic
-│   │   └── remove_bg.py           # Background removal logic
+│   │   ├── remove_bg.py           # Background removal logic
+│   │   └── inpaint.py             # Inpainting logic using Stable Diffusion
 │   ├── entity/
-│   │   ├── bg_artifact.py         # Data classes and artifacts
-│   │   └── bg_config.py           # Configuration management
+│   │   ├── artifact.py         # Data classes and artifacts
+│   │   └── config.py           # Configuration management
 │   ├── exceptions.py              # Custom exception definitions
 │   ├── logger.py                  # Logging configuration
 │   ├── pipeline/
@@ -51,8 +53,8 @@ A powerful image processing service built with Python and FastAPI that provides 
 
 ### Prerequisites
 
-- Python 3.10 or higher
-- Git
+- Python 3.10 or higher  
+- Git  
 
 ### Installation
 
@@ -78,7 +80,7 @@ A powerful image processing service built with Python and FastAPI that provides 
    pip install -r requirements.txt
    ```
 
-   > **Note**: The `rembg` library may require additional system dependencies:
+   > **Note**: The `rembg` and inpainting libraries may require additional system dependencies:
    > - **Ubuntu/Debian**: `sudo apt-get install libglib2.0-0`
    > - **macOS**: Usually works out of the box
    > - **Windows**: May require Visual C++ Build Tools
@@ -99,10 +101,12 @@ A powerful image processing service built with Python and FastAPI that provides 
 
 ### Web Interface
 
-1. Navigate to `http://127.0.0.1:8000` in your browser
-2. **Remove Background**: Upload an image and click "Remove Background"
-3. **Add Background**: Upload a foreground image (preferably with transparent background) and a background image, then click "Add Background"
-4. Download your processed images
+1. Navigate to `http://127.0.0.1:8000` in your browser  
+2. Choose one of the following actions:  
+   - **Remove Background**: Upload an image and click "Remove Background"  
+   - **Add Background**: Upload a foreground image and a background image  
+   - **Inpaint Image**: Upload an input image and a black-white mask image where white represents the area to be inpainted  
+3. Download your processed images  
 
 ### API Endpoints
 
@@ -117,14 +121,6 @@ Remove background from an uploaded image.
 
 **Response:** Image with background removed (PNG format)
 
-**Example:**
-```bash
-curl -X POST "http://127.0.0.1:8000/remove-background/" \
-  -H "accept: application/json" \
-  -H "Content-Type: multipart/form-data" \
-  -F "file=@your_image.jpg"
-```
-
 #### `POST /add-background/`
 Add a new background to a foreground image.
 
@@ -134,14 +130,14 @@ Add a new background to a foreground image.
 
 **Response:** Composite image with new background
 
-**Example:**
-```bash
-curl -X POST "http://127.0.0.1:8000/add-background/" \
-  -H "accept: application/json" \
-  -H "Content-Type: multipart/form-data" \
-  -F "foreground=@foreground.png" \
-  -F "background=@background.jpg"
-```
+#### `POST /inpaint/`
+Inpaint a masked region of an image.
+
+**Parameters:**
+- `input_image`: Original image
+- `mask_image`: Mask image (white = area to inpaint, black = keep as is)
+
+**Response:** Inpainted image
 
 ---
 
@@ -149,23 +145,22 @@ curl -X POST "http://127.0.0.1:8000/add-background/" \
 
 Configuration is managed through classes in `src/entity/bg_config.py`. You can customize:
 
-- **File paths**: Where processed images are saved
-- **Temporary directories**: Location for intermediate processing files
-- **Model settings**: Background removal model parameters
-- **Logging levels**: Adjust verbosity of application logs
-
-To modify default settings, edit the configuration files or environment variables as needed.
+- **File paths**: Where processed images are saved  
+- **Temporary directories**: Location for intermediate processing files  
+- **Model settings**: Background removal and inpainting model parameters  
+- **Logging levels**: Adjust verbosity of application logs  
 
 ---
 
 ## 🔧 Technical Details
 
-- **Background Removal Model**: U2NET human segmentation model via `rembg`
-- **Image Processing**: Pillow (PIL) for image manipulation
-- **Web Framework**: FastAPI with Jinja2 templating
-- **File Handling**: Automatic cleanup of temporary files
-- **Error Management**: Custom exceptions with detailed stack traces
-- **Logging**: Structured logging with configurable levels
+- **Background Removal Model**: U2NET via `rembg`  
+- **Inpainting Model**: `stabilityai/stable-diffusion-2-inpainting` via Hugging Face diffusers  
+- **Image Processing**: Pillow (PIL) for image manipulation  
+- **Web Framework**: FastAPI with Jinja2 templating  
+- **File Handling**: Automatic cleanup of temporary files  
+- **Error Management**: Custom exceptions with detailed stack traces  
+- **Logging**: Structured logging with configurable levels  
 
 ---
 
@@ -175,32 +170,32 @@ To modify default settings, edit the configuration files or environment variable
 
 The application follows a modular architecture:
 
-- **Components**: Core functionality for background operations
-- **Entities**: Data classes and configuration management
-- **Pipeline**: Main processing workflows
-- **Utils**: Helper functions and utilities
-- **Exceptions**: Custom error handling
+- **Components**: Core functionality for background and inpainting operations  
+- **Entities**: Data classes and configuration management  
+- **Pipeline**: Main processing workflows  
+- **Utils**: Helper functions and utilities  
+- **Exceptions**: Custom error handling  
 
 ### Adding New Features
 
-1. Implement core logic in appropriate `src/components/` module
-2. Add configuration options in `src/entity/bg_config.py`
-3. Create pipeline functions in `src/pipeline/`
-4. Add API endpoints in `app.py`
-5. Update frontend if needed in `templates/`
+1. Implement core logic in appropriate `src/components/` module  
+2. Add configuration options in `src/entity/bg_config.py`  
+3. Create pipeline functions in `src/pipeline/`  
+4. Add API endpoints in `app.py`  
+5. Update frontend if needed in `templates/`  
 
 ---
 
 ## 🚀 Future Roadmap
 
-- [ ] **User Authentication**: Add user accounts and session management
-- [ ] **Batch Processing**: Support multiple image processing
-- [ ] **Advanced Models**: Integration with additional AI models (SAM, etc.)
-- [ ] **Cloud Storage**: Support for AWS S3, Google Cloud Storage
-- [ ] **Image Formats**: Extended format support (WebP, HEIC, etc.)
-- [ ] **Real-time Processing**: WebSocket support for live processing
-- [ ] **Docker Support**: Containerization for easy deployment
-- [ ] **Enhanced UI**: Modern React/Vue.js frontend
+- [ ] **User Authentication**: Add user accounts and session management  
+- [ ] **Batch Processing**: Support multiple image processing  
+- [ ] **Advanced Models**: Integration with SAM, Deeplab, etc.  
+- [ ] **Cloud Storage**: Support for AWS S3, Google Cloud Storage  
+- [ ] **Image Formats**: Extended format support (WebP, HEIC, etc.)  
+- [ ] **Real-time Processing**: WebSocket support for live processing  
+- [ ] **Docker Support**: Containerization for easy deployment  
+- [ ] **Enhanced UI**: Modern React/Vue.js frontend  
 
 ---
 
@@ -208,11 +203,11 @@ The application follows a modular architecture:
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Fork the repository  
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)  
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)  
+4. Push to the branch (`git push origin feature/AmazingFeature`)  
+5. Open a Pull Request  
 
 ---
 
@@ -224,17 +219,18 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 📞 Contact
 
-**Arogya Vamshi**
-- Email: [arogyavamshi2002@gmail.com](mailto:arogyavamshi2002@gmail.com)
-- GitHub: [@Arogya-2002](https://github.com/Arogya-2002)
+**Arogya Vamshi**  
+- Email: [arogyavamshi2002@gmail.com](mailto:arogyavamshi2002@gmail.com)  
+- GitHub: [@Arogya-2002](https://github.com/Arogya-2002)  
 
 ---
 
 ## 🙏 Acknowledgments
 
-- [rembg](https://github.com/danielgatis/rembg) - For the excellent background removal library
-- [FastAPI](https://fastapi.tiangolo.com/) - For the modern, fast web framework
-- [U2NET](https://github.com/xuebinqin/U-2-Net) - For the underlying segmentation model
+- [rembg](https://github.com/danielgatis/rembg) - For the excellent background removal library  
+- [Stable Diffusion Inpainting](https://huggingface.co/stabilityai/stable-diffusion-2-inpainting) - For AI-based inpainting  
+- [FastAPI](https://fastapi.tiangolo.com/) - For the modern, fast web framework  
+- [U2NET](https://github.com/xuebinqin/U-2-Net) - For the underlying segmentation model  
 
 ---
 
