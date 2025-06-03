@@ -1,7 +1,7 @@
 from src.exceptions import CustomException
 from src.logger import logging
-from src.entity.bg_config import BgConfig, ChangeBgConfig
-from src.entity.bg_artifact import ChangeBgArtifact
+from src.entity.config import BgConfig, ChangeBgConfig
+from src.entity.artifact import ChangeBgArtifact
 from src.utils import generate_unique_filename
 
 import sys

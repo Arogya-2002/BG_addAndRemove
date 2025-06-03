@@ -15,3 +15,9 @@ CH_BG_IMG_NAME = "changed_bg.png"
 
 # Default path folder (can be anything general)
 IMG_PATH_FOLDER = ARTIFACTS_DIR
+
+"""constants for image inpainting"""
+MASK_IMG_NAME = "mask.png"
+INPUT_IMG_NAME = "input_image.png"
+INPAINT_OUTPUT_DIR = os.path.join(ARTIFACTS_DIR, "inpainted_images")
+INPAINT_OUTPUT_IMG_NAME = "output_image.png"

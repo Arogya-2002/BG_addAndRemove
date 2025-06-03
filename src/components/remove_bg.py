@@ -2,8 +2,8 @@ from src.exceptions import CustomException
 import sys
 from src.logger import logging
 
-from src.entity.bg_config import BgConfig, RemoveBgConfig
-from src.entity.bg_artifact import RemoveBgArtifact
+from src.entity.config import BgConfig, RemoveBgConfig
+from src.entity.artifact import RemoveBgArtifact
 from src.utils import generate_unique_filename
 
 from rembg import remove, new_session
