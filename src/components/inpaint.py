@@ -103,14 +103,14 @@ class Inpaint:
             torch.cuda.empty_cache()
 
 
-if __name__ == "__main__":
-    try:
-        inpaint_instance = Inpaint()
-        # Example usage
-        mask_path = r"/home/litzchill/vamshi/BG_addAndRemove/data/overture-creations-5sI6fQgYIuo_mask.png"
-        input_path = r"/home/litzchill/vamshi/BG_addAndRemove/data/overture-creations-5sI6fQgYIuo.png"
-        artifact = inpaint_instance.initiate_inpaint(mask_img_path=mask_path, input_img_path=input_path)
-        print(f"Inpainting completed. Output saved at: {artifact.output_img_path}")
-    except CustomException as e:
-        logging.error(f"An error occurred: {e}")
+# if __name__ == "__main__":
+#     try:
+#         inpaint_instance = Inpaint()
+#         # Example usage
+#         mask_path = r"/home/litzchill/vamshi/BG_addAndRemove/data/overture-creations-5sI6fQgYIuo_mask.png"
+#         input_path = r"/home/litzchill/vamshi/BG_addAndRemove/data/overture-creations-5sI6fQgYIuo.png"
+#         artifact = inpaint_instance.initiate_inpaint(mask_img_path=mask_path, input_img_path=input_path)
+#         print(f"Inpainting completed. Output saved at: {artifact.output_img_path}")
+#     except CustomException as e:
+#         logging.error(f"An error occurred: {e}")
 1
