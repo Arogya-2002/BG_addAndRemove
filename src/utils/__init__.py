@@ -1,7 +1,7 @@
 # utils.py
 import os
 from pathlib import Path
-import time
+import time,io
 
 def generate_unique_filename(input_image_path: str, output_folder: str) -> str:
     """
