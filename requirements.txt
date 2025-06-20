@@ -2,16 +2,7 @@
 rembg 
 onnxruntime
 pillow
-jinja2
 uvicorn
 fastapi
 python-multipart
 
-#for inpainting dependencies
-transformers 
-diffusers 
-torch 
-accelerate
-huggingface_hub[hf_xet]
-torchvision 
-python-dateutil

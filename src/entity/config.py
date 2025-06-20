@@ -14,10 +14,7 @@ class BgConfig:
         self.removed_bg_dir = REMOVED_BG_DIR
         self.changed_bg_dir = CHANGED_BG_DIR
         self.uploaded_bg_dir = UPLOADED_BG_DIR
-        self.mask_img_name = MASK_IMG_NAME
-        self.input_img_name = INPUT_IMG_NAME
-        self.inpaint_output_dir = INPAINT_OUTPUT_DIR
-        self.inpaint_output_img_name = INPAINT_OUTPUT_IMG_NAME
+
 
 
 class RemoveBgConfig:
@@ -35,11 +32,3 @@ class ChangeBgConfig:
         self.uploaded_path_folder: str = bg_config.uploaded_bg_dir
 
 
-class InpaintConfig:
-    def __init__(self, bg_config: BgConfig):
-        self.mask_img_name = bg_config.mask_img_name
-        self.input_img_name = bg_config.input_img_name
-        self.uploaded_path_folder: str = bg_config.uploaded_bg_dir
-        self.img_path_folder = bg_config.img_path_folder
-        self.inpaint_output_dir = bg_config.inpaint_output_dir
-        self.inpaint_output_img_name = bg_config.inpaint_output_img_name

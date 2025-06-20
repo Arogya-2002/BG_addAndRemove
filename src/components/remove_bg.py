@@ -23,7 +23,7 @@ class RemoveBg:
             input_image = Image.open(input_image_path)
 
             # Create session with specific model
-            session = new_session(model_name='u2net_human_seg')
+            session = new_session(model_name='u2net')
 
             output_image = remove(
                 input_image,
@@ -55,8 +55,4 @@ class RemoveBg:
             raise CustomException(e, sys) from e
 
 
-# if __name__ == "__main__":
-#     remove_bg_obj = RemoveBg()
-#     remove_bg_obj.remove_bg(
-#         r"C:\Users\Vamshi\Desktop\Projects\litzchill\remove_bg\data\sky2.jpg"
-#     )
+
