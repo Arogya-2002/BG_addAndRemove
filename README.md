@@ -12,7 +12,6 @@ A powerful image processing service built with Python and FastAPI that provides 
 
 - **🎯 Smart Background Removal**: Leverage the powerful U2NET model via `rembg` library for precise background removal  
 - **🖼️ Background Replacement**: Seamlessly add custom backgrounds to transparent images  
-- **🪄 Inpainting**: Fill masked areas in images using stable diffusion inpainting models  
 - **🚀 REST API**: FastAPI-powered endpoints for programmatic access  
 - **🌐 Web Interface**: Clean, responsive HTML interface for easy image uploads  
 - **📁 Modular Architecture**: Well-organized codebase with reusable components  
@@ -34,7 +33,6 @@ A powerful image processing service built with Python and FastAPI that provides 
 │   ├── components/
 │   │   ├── add_bg.py              # Background addition logic
 │   │   ├── remove_bg.py           # Background removal logic
-│   │   └── inpaint.py             # Inpainting logic using Stable Diffusion
 │   ├── entity/
 │   │   ├── artifact.py         # Data classes and artifacts
 │   │   └── config.py           # Configuration management
@@ -105,7 +103,6 @@ A powerful image processing service built with Python and FastAPI that provides 
 2. Choose one of the following actions:  
    - **Remove Background**: Upload an image and click "Remove Background"  
    - **Add Background**: Upload a foreground image and a background image  
-   - **Inpaint Image**: Upload an input image and a black-white mask image where white represents the area to be inpainted  
 3. Download your processed images  
 
 ### API Endpoints
@@ -129,16 +126,6 @@ Add a new background to a foreground image.
 - `background`: Background image file
 
 **Response:** Composite image with new background
-
-#### `POST /inpaint/`
-Inpaint a masked region of an image.
-
-**Parameters:**
-- `input_image`: Original image
-- `mask_image`: Mask image (white = area to inpaint, black = keep as is)
-
-**Response:** Inpainted image
-
 ---
 
 ## ⚙️ Configuration
@@ -155,7 +142,6 @@ Configuration is managed through classes in `src/entity/bg_config.py`. You can c
 ## 🔧 Technical Details
 
 - **Background Removal Model**: U2NET via `rembg`  
-- **Inpainting Model**: `stabilityai/stable-diffusion-2-inpainting` via Hugging Face diffusers  
 - **Image Processing**: Pillow (PIL) for image manipulation  
 - **Web Framework**: FastAPI with Jinja2 templating  
 - **File Handling**: Automatic cleanup of temporary files  
@@ -182,7 +168,6 @@ The application follows a modular architecture:
 2. Add configuration options in `src/entity/bg_config.py`  
 3. Create pipeline functions in `src/pipeline/`  
 4. Add API endpoints in `app.py`  
-5. Update frontend if needed in `templates/`  
 
 ---
 
