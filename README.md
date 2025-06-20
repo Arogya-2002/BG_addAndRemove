@@ -213,7 +213,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## 🙏 Acknowledgments
 
 - [rembg](https://github.com/danielgatis/rembg) - For the excellent background removal library  
-- [Stable Diffusion Inpainting](https://huggingface.co/stabilityai/stable-diffusion-2-inpainting) - For AI-based inpainting  
 - [FastAPI](https://fastapi.tiangolo.com/) - For the modern, fast web framework  
 - [U2NET](https://github.com/xuebinqin/U-2-Net) - For the underlying segmentation model  
 
