@@ -1,4 +1,5 @@
-name: Python 3.10 Workflow
+name: bg_remove and add
+# Background Removal Application - Port 8001
 
 on:
   push:
@@ -58,7 +59,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_BGREMOVE }}
           IMAGE_TAG: latest
         run: |
           # Build the Docker image
@@ -87,18 +88,30 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Pull latest images
-        run: docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY }}:latest
+        run: docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_BGREMOVE }}:latest
         shell: /usr/bin/bash -e {0}
         env:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
+      - name: Stop and remove existing container
+        run: |
+          docker stop bgremove || true
+          docker rm bgremove || true
+        continue-on-error: true
           
       - name: Run Docker Image to serve users
         run: |
-          docker run -d -p 8001:8000 --ipc="host" --name=bgremove\
+          docker run -d -p 8001:8000 --ipc="host" --name=bgremove \
             -e "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
             -e "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
             -e "AWS_REGION=${{ secrets.AWS_REGION }}" \
-            ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY }}:latest
+            ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_BGREMOVE }}:latest
+
+      - name: Verify container is running
+        run: |
+          sleep 10
+          docker ps | grep bgremove || exit 1
+          echo "Background removal app is running on port 8001"
