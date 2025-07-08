@@ -9,6 +9,7 @@ import os
 import io
 import uuid
 import logging
+import uvicorn
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from typing import Optional
 
@@ -212,4 +213,4 @@ async def health_check():
     }
 
 if __name__ == "__main__":
-    uvicorn_run("app:app",host="0.0.0.0", port=8001, reload=True)
+    uvicorn.run("app:app",host="0.0.0.0", port=8001, reload=False)
